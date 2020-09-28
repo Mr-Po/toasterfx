@@ -362,7 +362,7 @@ public final class Toaster {
         // 若没有在显示中，初次
         if (!this.popup.isShowing()) {
 
-            this.popup.show(this.toasterFactory.getBackgroundWindow());
+            this.popup.show(this.toasterFactory.getWindow());
 
         } else {
 

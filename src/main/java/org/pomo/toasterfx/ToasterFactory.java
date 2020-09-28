@@ -18,12 +18,14 @@ package org.pomo.toasterfx;
 import javafx.beans.InvalidationListener;
 import javafx.collections.ObservableList;
 import javafx.stage.Screen;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.pomo.toasterfx.component.BackgroundWindow;
 import org.pomo.toasterfx.control.ToastBox;
 import org.pomo.toasterfx.control.impl.ToastBoxPane;
 import org.pomo.toasterfx.model.Toast;
@@ -142,12 +144,12 @@ public class ToasterFactory {
     private boolean useDefaultToastTypeStyleSheets = true;
 
     /**
-     * 后台窗体<br/>
+     * 消息者窗体<br/>
      * 用于进行弹窗展示
      */
+    @Setter
     @NonNull
-    @Getter(AccessLevel.PACKAGE)
-    private BackgroundWindow backgroundWindow;
+    private ToasterWindow window;
 
     /**
      * 消息者 池<br/>
@@ -213,6 +215,9 @@ public class ToasterFactory {
         if (this.popupStrategy == null)
             this.popupStrategy = new RightBottomPopupStrategy(this.multiToastFactory, Duration.seconds(0.35));
 
+        if (this.window == null)
+            this.window = new BackgroundWindow();
+
         this.screens = Screen.getScreens();
 
         // 当屏幕边界变化时，校正可见队列
@@ -221,10 +226,17 @@ public class ToasterFactory {
         };
         this.screens.addListener(this.screensInvalidationListener);
 
-        this.backgroundWindow = new BackgroundWindow();
-
         if (this.isUseDefaultToastTypeStyleSheets())
-            this.backgroundWindow.getStylesheets().add(ToastTypes.DEFAULT_STYLE_SHEETS);
+            this.window.getStylesheets().add(ToastTypes.DEFAULT_STYLE_SHEETS);
+    }
+
+    /**
+     * <h2>得到 窗体</h2>
+     *
+     * @return 窗体
+     */
+    Window getWindow() {
+        return this.window.getWindow();
     }
 
     /**
@@ -242,7 +254,7 @@ public class ToasterFactory {
      * @return 可观察的样式表
      */
     public ObservableList<String> getStylesheets() {
-        return this.backgroundWindow.getStylesheets();
+        return this.window.getStylesheets();
     }
 
     /**
@@ -378,7 +390,7 @@ public class ToasterFactory {
         toaster.use();
 
         // 判断背景Window是否处于显示中
-        if (!this.backgroundWindow.isShowing()) this.backgroundWindow.show();
+        if (!this.window.isShowing()) this.window.show();
 
         return toaster;
     }
@@ -425,7 +437,7 @@ public class ToasterFactory {
         list.clear();
 
         // 当池中没有Toaster时，隐藏背景Window
-        if (this.pool.isEmpty()) this.backgroundWindow.close();
+        if (this.pool.isEmpty()) this.window.close();
     }
 
     /**
@@ -449,9 +461,9 @@ public class ToasterFactory {
 
             this.clear(visualToasters, pool);
 
-            this.backgroundWindow.getStylesheets().clear();
-            this.backgroundWindow.close();
-            this.backgroundWindow = null;
+            this.window.getStylesheets().clear();
+            this.window.close();
+            this.window = null;
         });
 
         log.trace("ToasterFactory is destroyed.");

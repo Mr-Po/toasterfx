@@ -16,52 +16,50 @@
 package org.pomo.toasterfx;
 
 import javafx.collections.ObservableList;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Window;
 
 /**
- * <h2>后台Window</h2>
+ * <h2>后台窗体</h2>
  *
- * <p>用于展示Popup，使其在主界面隐藏时，仍能正常展示消息</p>
+ * <p>后台窗体接口</p>
  * <br/>
  *
- * <p>创建时间：2020-09-27 15:53:05</p>
- * <p>更新时间：2020-09-27 15:53:05</p>
+ * <p>创建时间：2020-09-28 21:22:02</p>
+ * <p>更新时间：2020-09-28 21:22:02</p>
  *
  * @author Mr.Po
  * @version 1.0
  */
-class BackgroundWindow extends Window {
-
-    BackgroundWindow() {
-
-        this.setOpacity(0);
-
-        this.setScene(new Scene(new Parent() {
-        }));
-    }
+public interface ToasterWindow {
 
     /**
      * <h2>显示</h2>
      */
-    public void show() {
-        super.show();
-    }
+    void show();
 
     /**
      * <h2>关闭</h2>
      */
-    public void close() {
-        hide();
-    }
+    void close();
+
+    /**
+     * <h2>是否处于显示中</h2>
+     *
+     * @return 是/否
+     */
+    boolean isShowing();
 
     /**
      * <h2>得到 可观察的样式表集合</h2>
      *
      * @return 可观察的样式表集合
      */
-    public ObservableList<String> getStylesheets() {
-        return this.getScene().getStylesheets();
-    }
+    ObservableList<String> getStylesheets();
+
+    /**
+     * <h2>得到 窗体</h2>
+     *
+     * @return 窗体
+     */
+    Window getWindow();
 }
