@@ -1,9 +1,23 @@
 language: java
 
+# 无需root权限
+sudo: false
+
+os: linux
+
 jdk:
   - openjdk8
 
 before_install:
   - sudo apt-get install -y openjfx
 
-install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
+# 开启虚拟gui服务
+services:
+  - xvfb
+
+# 跳过maven完整构建
+install: true
+
+# 运行maven测试
+script:
+  - mvn test
