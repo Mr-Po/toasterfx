@@ -34,7 +34,7 @@ ToastBarToasterService service = new ToastBarToasterService();
 service.initialize();
 
 // you can call this method on any thread.
-service.bomb("ToasterFX","Hello", ToastTypes.INFO);
+service.bomb("ToasterFX","Hello ToasterFX !", ToastTypes.INFO);
 ```
 
 ## Screenshot

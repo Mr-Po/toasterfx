@@ -33,7 +33,7 @@ ToastBarToasterService service = new ToastBarToasterService();
 service.initialize();
 
 // 你可以在任何线程中，调用此方法。
-service.bomb("ToasterFX","Hello", ToastTypes.INFO);
+service.bomb("ToasterFX","Hello ToasterFX !", ToastTypes.INFO);
 ```
 
 ## 截图
