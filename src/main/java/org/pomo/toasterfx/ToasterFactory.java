@@ -228,6 +228,15 @@ public class ToasterFactory {
     }
 
     /**
+     * <h2>得到 展示中的消息者数量</h2>
+     *
+     * @return 展示中的消息者数量
+     */
+    public int getVisualSize() {
+        return this.visualToasters.size();
+    }
+
+    /**
      * <h2>得到样式表</h2>
      *
      * @return 可观察的样式表
