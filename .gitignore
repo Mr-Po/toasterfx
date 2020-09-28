@@ -5,5 +5,3 @@
 *.ipr
 target/
 out/
-
-**/src/test/
