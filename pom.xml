@@ -114,7 +114,6 @@
                                 <exclude>**/README</exclude>
                                 <exclude>**/pom.xml</exclude>
                                 <exclude>src/test/resources/**</exclude>
-                                <exclude>src/test/java/**</exclude>
                                 <exclude>src/main/resources/**</exclude>
                             </excludes>
                         </licenseSet>
@@ -212,17 +211,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <!--endregion-->
-
-            <!--region 打包时不运行test-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18.1</version>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
             </plugin>
             <!--endregion-->
 
