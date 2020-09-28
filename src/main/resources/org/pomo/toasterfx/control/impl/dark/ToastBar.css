@@ -1,0 +1,3 @@
+.toast-bar-base.toast-bar > .right-container > .title-container {
+    -fx-down-line: derive(-fx-text-background-color, -40%);
+}

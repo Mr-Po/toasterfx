@@ -1,0 +1,26 @@
+.toast-box {
+    -fx-outer-border: derive(#505050, -20%);
+    -fx-inner-border: derive(#505050, 70%);
+    -fx-body-bg-color: #505050;
+    -fx-body-color: linear-gradient(
+            to bottom,
+            ladder(-fx-body-bg-color, derive(-fx-body-bg-color, 8%) 75%, derive(-fx-body-bg-color, 10%) 80%),
+            derive(-fx-body-bg-color, -8%)
+    );
+}
+
+/*进度条凹槽颜色*/
+.progress-bar > .track {
+    -fx-shadow-highlight-color: derive(#505050, -20%);
+    -fx-text-box-border: derive(#505050, 28%);
+    -fx-control-inner-background: #505050;
+}
+
+/*进度条颜色*/
+.toast-box > .progress-bar > .bar {
+
+    /*进行加深处理*/
+
+    -bar-left-color: derive(-fx-toast-type-color, 30%);
+    -bar-right-color: derive(-fx-toast-type-color, -30%);
+}

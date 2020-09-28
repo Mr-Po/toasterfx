@@ -1,0 +1,25 @@
+@import url("ToastBarBase.css");
+
+.toast-bar-base.toast-bar {
+    -fx-height: 4.8em;
+}
+
+.toast-bar-base.toast-bar > .right-container {
+    -fx-alignment: top-left;
+}
+
+.toast-bar-base.toast-bar > .right-container > .title-container {
+    -fx-down-line: derive(-fx-text-background-color, 100%);
+    -fx-border-width: 0 0 0.06em 0;
+    -fx-border-color: transparent transparent -fx-down-line transparent;
+
+    -fx-padding: 0 0 0.14em 0;
+}
+
+.toast-bar-base.toast-bar > .right-container > .title-container > .title {
+    -fx-font-size: 1.2em;
+}
+
+.toast-bar-base.toast-bar > .right-container > .content {
+    -fx-padding: 0.20em 0 0 0;
+}

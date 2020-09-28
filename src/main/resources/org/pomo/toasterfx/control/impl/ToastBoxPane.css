@@ -1,0 +1,72 @@
+.toast-box {
+
+    -fx-background-color: derive(-fx-outer-border,-5%), -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0, 0.07em, 0.14em;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 11, 0.0, 0, 3);
+
+    -fx-width: 22em;
+
+    -fx-min-width: -fx-width;
+    -fx-max-width: -fx-width;
+    -fx-pref-width: -fx-width;
+}
+
+.toast-box > .container {
+    -fx-padding: 0.47em 0.47em 0.47em 0em;
+}
+
+/* region {进度条} */
+.toast-box > .progress-bar > .bar {
+
+    -bar-left-color: derive(-fx-toast-type-color, 40%);
+    -bar-right-color: derive(-fx-toast-type-color, -15%);
+
+    -fx-background-color: linear-gradient(to left, -bar-left-color, -bar-right-color);
+    -fx-background-insets: 0.06em 0.06em 0.12em 0.06em;
+    -fx-background-radius: 0;
+
+    -fx-padding: 0.2em;
+}
+
+.toast-box > .progress-bar > .track {
+    -fx-background-insets: 0, 0, 0.06em 0.06em 0.12em 0.06em;
+    -fx-background-radius: 0;
+}
+
+/* endregion */
+
+/* region {关闭按钮} */
+.toast-box > .container > .close-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0.12em;
+    -fx-padding: 0;
+    -fx-alignment: center;
+
+    -fx-min-width: 1.13em;
+    -fx-min-height: 1.13em;
+}
+
+.toast-box > .container > .close-button:hover {
+    -fx-background-color: linear-gradient(#a3a3a3, #8b8b8b 34%, #777777 36%, #777777 63%, #8b8b8b 65%, #adadad);
+}
+
+.toast-box > .container > .close-button:pressed {
+    -fx-background-color: linear-gradient(#a3a3a3, #8b8b8b 34%, #777777 36%, #777777 63%, #8b8b8b 65%, #adadad);
+}
+
+.toast-box > .container > .close-button > .graphic {
+
+    -fx-background-color: #949494;
+    -fx-scale-shape: false;
+    -fx-padding: 0.3em; /* Graphic is 9x9 px */
+
+    -fx-shape: "M395.992,296.758l1.794-1.794l7.292,7.292l-1.795,1.794 L395.992,296.758z M403.256,294.992l1.794,1.794l-7.292,7.292l-1.794-1.795 L403.256,294.992z";
+}
+
+.toast-box > .container > .close-button:hover > .graphic {
+    -fx-background-color: #fefeff;
+}
+
+/* endregion */

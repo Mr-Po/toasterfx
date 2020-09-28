@@ -1,0 +1,34 @@
+.toast-bar-base {
+    -fx-height: 3.9em;
+
+    -fx-min-height: -fx-height;
+    -fx-max-height: -fx-height;
+}
+
+.toast-bar-base > .graphic-container {
+    -fx-min-width: 4.8em;
+    -fx-min-height: -fx-height;
+
+    -fx-right-line: derive(-fx-text-background-color, 65%);
+    -fx-border-width: 0 0.06em 0 0;
+    -fx-border-color: transparent -fx-right-line transparent transparent;
+}
+
+.toast-bar-base > .right-container {
+    -fx-padding: 0 0.93em 0 0.66em;
+    -fx-alignment: center-left;
+}
+
+.toast-bar-base > .right-container > .content {
+    -fx-font-size: 1.0em;
+    -fx-text-fill: derive(-fx-text-background-color, 30%);
+}
+
+/* ============== ↓ 图标SVG ↓ ============== */
+.svg .toast-bar-base > .graphic-container > .graphic {
+    -fx-shape: -fx-toast-type-shape;
+    -fx-max-width: -fx-toast-type-width;
+    -fx-max-height: -fx-toast-type-height;
+
+    -fx-background-color: -fx-toast-type-color;
+}

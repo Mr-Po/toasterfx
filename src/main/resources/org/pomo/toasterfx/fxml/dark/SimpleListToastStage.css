@@ -1,0 +1,192 @@
+/* ============== ↓ 图标SVG ↓ ============== */
+.root {
+    -fx-cursor: default;
+
+    -dark-corlr: #464646;
+
+    -dark-text: #d8d8d8;
+    -dark-text-secondary: #c4c4c4;
+
+    -dark-border: derive(#505050, 70%);
+
+    /*label的默认颜色*/
+    -fx-text-background-color: -dark-text;
+
+    -fx-background-color: derive(-dark-border, -20%), -dark-corlr;
+    -fx-background-insets: 0, 0 0.06em 0.06em 0.06em;
+}
+
+/* region {按钮} */
+.button,
+.button:focused {
+
+    -fx-shadow-highlight-color: derive(-dark-corlr, -20%);
+    -fx-outer-border: derive(-dark-corlr, -20%);
+    -fx-inner-border: derive(-dark-corlr, 70%);
+    -fx-body-bg-color: derive(-dark-corlr, 10%);
+    -fx-body-color: linear-gradient(
+            to bottom,
+            ladder(-fx-body-bg-color, derive(-fx-body-bg-color, 8%) 75%, derive(-fx-body-bg-color, 10%) 80%),
+            derive(-fx-body-bg-color, -8%)
+    );
+    -fx-background-insets: 0, 0, 0.06em, 0.12em;
+    -fx-text-base-color: -dark-text-secondary;
+}
+
+.button:hover {
+    -fx-body-bg-color: derive(-dark-corlr, 30%);
+}
+
+/* endregion */
+
+/* region {表格控件} */
+
+/*调整整个TableView背景*/
+.table-view,
+.table-view:focused {
+    -fx-border-width: 0;
+
+    -dark-body-color: derive(-dark-corlr, 10%);
+    -dark-header-color: derive(-dark-body-color, 15%);
+
+    -fx-background-color: -dark-border, -dark-body-color;
+    -fx-background-insets: 0, 0.06em;
+}
+
+/* region {TableView - 标题栏} */
+/*调整标题栏三层背景*/
+.table-view .column-header {
+    -fx-border-width: 0;
+
+    -fx-background-color: -dark-border, -dark-header-color;
+    -fx-background-insets: 0, 0 0.06em 0.06em 0;
+}
+
+.table-view .column-header-background {
+    -fx-border-width: 0;
+
+    -fx-background-color: -dark-header-color;
+    -fx-background-insets: 0;
+}
+
+/*header剩余部分*/
+.table-view .filler {
+    -fx-border-width: 0;
+
+    -fx-background-color: -dark-border, -dark-header-color;
+    -fx-background-insets: 0, 0 0 0.06em 0;
+}
+
+/* endregion */
+
+/* region {TableView - Row&单元格} */
+.table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell {
+
+    -dark-row-border: derive(-dark-body-color, 30%);
+    -dark-row-selected-color: derive(-dark-body-color, 10%);
+
+    -fx-background-color: -dark-row-border, -dark-body-color;
+    -fx-background-insets: 0 0 0.06em 0, 0 0 0.12em 0;
+}
+
+.table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell > .table-cell {
+    -fx-border-width: 0 0.06em 0 0;
+    -fx-border-color: -dark-row-border;
+}
+
+.table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell:selected {
+    -fx-background-color: -dark-row-border, -dark-row-selected-color;
+    -fx-background-insets: -0.06em 0 0.06em 0, -0.06em 0 0.12em 0;
+}
+
+/* endregion */
+
+/* 标题栏排序标识 */
+.table-view .arrow {
+    -fx-mark-color: -dark-text-secondary;
+}
+
+/* 滚动条水平与垂直交界处(右下角) */
+.table-view > .virtual-flow > .corner {
+    -fx-background-color: -dark-border, -dark-body-color;
+    -fx-background-insets: 0 0.06em 0.06em 0, 0.06em;
+}
+
+
+/* region {TableView - CheckBox} */
+.table-view .column-header .check-box > .box {
+    -fx-background-color: -dark-border, derive(-dark-corlr, 20%);
+    -fx-background-insets: 0, 0.06em;
+}
+
+.check-box-table-cell > .check-box > .box {
+    -fx-background-color: -dark-border, derive(-dark-corlr, 20%);
+    -fx-background-insets: 0, 0.06em;
+}
+
+.table-view .check-box:selected > .box > .mark,
+.table-view .check-box:indeterminate > .box > .mark {
+    -fx-background-color: -dark-text-secondary;
+    -fx-background-insets: 0;
+}
+
+/* endregion */
+/* endregion */
+
+/* region {滚动条} */
+
+/* region {滚动条 - 垂直} */
+.scroll-bar:vertical {
+    -fx-background-color: -dark-border, -dark-corlr;
+    -fx-background-insets: 0 0 0 -0.06em, 0;
+}
+
+.scroll-bar:vertical > .thumb {
+    -fx-background-color: -dark-border, -dark-header-color;
+    -fx-background-insets: 0 0.18em 0 0.12em, 0.06em 0.24em 0.06em 0.18em;
+}
+
+/* endregion */
+
+/* region {滚动条 - 水平} */
+.scroll-bar:horizontal {
+    -fx-background-color: -dark-border, -dark-corlr;
+    -fx-background-insets: -0.06em 0 0 0, 0;
+}
+
+.scroll-bar:horizontal > .thumb {
+    -fx-background-color: -dark-border, -dark-header-color;
+    -fx-background-insets: 0.12em 0 0.18em 0, 0.18em 0.06em 0.24em 0.06em;
+}
+
+/* endregion */
+
+.scroll-bar > .thumb:hover {
+    -dark-header-color: derive(-dark-body-color, 25%);
+}
+
+/* region {加/减按钮} */
+/* 滚动条 - 加/减按钮框 */
+.scroll-bar > .increment-button,
+.scroll-bar > .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+/* 滚动条 - 加/减按钮 */
+.scroll-bar > .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow {
+    -fx-background-color: derive(-dark-text-secondary, -10%), derive(-dark-text-secondary, -10%);
+}
+
+.scroll-bar > .increment-button:hover > .increment-arrow,
+.scroll-bar > .decrement-button:hover > .decrement-arrow {
+    -fx-background-color: -dark-text, -dark-text;
+}
+
+/* endregion */
+/* endregion */
+
+.table-view .virtual-flow .sheet .cell .svg.graphic {
+    -fx-background-color: derive(-fx-toast-type-color, -15%);
+}

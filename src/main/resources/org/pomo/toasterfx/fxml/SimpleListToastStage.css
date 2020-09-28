@@ -1,0 +1,41 @@
+/* ============== ↓ 图标SVG ↓ ============== */
+.root {
+    -fx-pref-width: 53em;
+    -fx-pref-height: 30em;
+
+    -fx-spacing: 0.53em;
+    -fx-padding: 1.33em;
+}
+
+.table-view .virtual-flow .sheet .cell .svg.graphic {
+    -fx-shape: -fx-toast-type-shape;
+    -fx-max-width: -fx-toast-type-width;
+    -fx-max-height: -fx-toast-type-height;
+
+    -fx-background-color: -fx-toast-type-color;
+}
+
+.table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell > .table-cell.digest {
+    -fx-padding: 0 0 0 0.66em;
+}
+
+.table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell > .table-cell.operate {
+    -fx-padding: 0.53em 0 0.33em 0;
+    -fx-alignment: center;
+}
+
+.table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell > .table-cell.date {
+    -fx-alignment: center;
+}
+
+.table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell > .table-cell.type {
+    -fx-alignment: center;
+}
+
+/*隐藏水平进度条*/
+.table-view .scroll-bar:horizontal .increment-arrow,
+.table-view .scroll-bar:horizontal .decrement-arrow,
+.table-view .scroll-bar:horizontal .increment-button,
+.table-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
+}

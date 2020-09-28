@@ -1,0 +1,16 @@
+.toast-bar-base {
+    -fx-text-background-color: #d8d8d8;
+}
+
+.toast-bar-base > .graphic-container {
+    -fx-right-line: derive(-fx-text-background-color, -25%);
+}
+
+.toast-bar-base > .right-container > .content {
+    -fx-text-fill: derive(-fx-text-background-color, -20%);
+}
+
+/* ============== ↓ 图标SVG ↓ ============== */
+.svg .toast-bar-base > .graphic-container > .graphic {
+    -fx-background-color: derive(-fx-toast-type-color, -15%);
+}
