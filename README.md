@@ -1,5 +1,5 @@
-# ToasterFX [![Apache License](https://img.shields.io/badge/language-English-brightgreen)](README_en.md)
-![Java8.0+](https://img.shields.io/badge/javaFX-8.0%2B-green)
+# ToasterFX [![language: English](https://img.shields.io/badge/language-English-brightgreen)](README_en.md)
+[![JavaFX: 8.0+](https://img.shields.io/badge/javaFX-8.0%2B-green)](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 [![Apache License](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](LICENSE)
 
 JavaFX 的一个消息提示库。
