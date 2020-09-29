@@ -25,6 +25,7 @@ import org.pomo.toasterfx.model.Toast;
  *
  * <p>实现此接口的Toast、Node，当通过点击ToastBox中的“x”按钮，会触发此执行。</p>
  * <p>直接调用Toast或Toaster的close()，不会触发此执行。</p>
+ * <p>超时导致的close()，不会触发此执行。</p>
  * <br/>
  *
  * <p>创建时间：2020-09-23 14:37:37</p>
