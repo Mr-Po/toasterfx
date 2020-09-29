@@ -22,24 +22,60 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
 import lombok.SneakyThrows;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.runners.MethodSorters;
 import org.pomo.toasterfx.ToastBarToasterService;
 import org.pomo.toasterfx.ToasterFactory;
 import org.pomo.toasterfx.ToasterWindow;
+import org.pomo.toasterfx.model.ReferenceType;
 import org.pomo.toasterfx.model.ToastParameter;
 import org.pomo.toasterfx.model.impl.SingleToast;
 import org.pomo.toasterfx.model.impl.ToastTypes;
+import org.pomo.toasterfx.util.FXUtils;
 import org.testfx.api.FxToolkit;
 
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+/**
+ * <h2>ToasterFX 测试</h2>
+ *
+ * <p>用于打包和远端测试</p>
+ * <br/>
+ *
+ * <p>创建时间：2020-09-29 09:28:16</p>
+ * <p>更新时间：2020-09-29 09:28:16</p>
+ *
+ * @author Mr.Po
+ * @version 1.0
+ */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ToasterFXTest {
 
-    @Test
-    public void test() throws TimeoutException, InterruptedException {
+    /**
+     * 三秒关闭 - 消息体属性
+     */
+    private static final ToastParameter PARAMETER = ToastParameter.builder().timeout(Duration.seconds(3)).build();
+
+    /**
+     * 消息者服务
+     */
+    private static ToastBarToasterService toasterService;
+
+    /**
+     * 等待超时
+     */
+    private static final int TIMEOUT = 10;
+
+    /**
+     * <h2>初始化</h2>
+     */
+    @BeforeClass
+    @SneakyThrows
+    public static void init() {
 
         Stage stage = FxToolkit.registerPrimaryStage();
 
@@ -82,30 +118,127 @@ public class ToasterFXTest {
         ToasterFactory toasterFactory = new ToasterFactory();
         toasterFactory.setWindow(window);
 
-        ToastBarToasterService toasterService = new ToastBarToasterService();
+        toasterService = new ToastBarToasterService();
         toasterService.setToasterFactory(toasterFactory);
         toasterService.initialize();
+    }
 
-        ToastParameter parameter = ToastParameter.builder().timeout(Duration.seconds(3)).build();
-        SingleToast toast = toasterService.born("ToasterFX", "Hello ToasterFX !", parameter, ToastTypes.INFO);
+    /**
+     * <h2>销毁</h2>
+     */
+    @AfterClass
+    public static void destroy() {
 
-        CountDownLatch countDownLatch = new CountDownLatch(2);
+        FXUtils.smartLater(() -> toasterService.destroy());
 
-        toast.setOnDock((it, node) -> {
+        System.out.println("ToasterFX test success !");
+    }
 
-            int visualSize = toasterFactory.getVisualSize();
-            Assert.assertEquals("visual toaster size not match.", 1, visualSize);
+    /**
+     * <h2>生命周期测试</h2>
+     */
+    @Test
+    public void test01() {
 
-            countDownLatch.countDown();
+        SingleToast toast = toasterService
+                .born("ToasterFX", "Hello ToasterFX !", PARAMETER, ToastTypes.INFO);
 
-        }).setOnDestroy(it -> countDownLatch.countDown());
+        CountDownLatch latch = new CountDownLatch(4);
+
+        toast
+                .setOnDock((it, node) -> {
+
+                    int visualSize = toasterService.getToasterFactory().getVisualSize();
+                    Assert.assertEquals("visual toaster size not match.", 1, visualSize);
+
+                    latch.countDown();
+                })
+                .setOnUnDock((it, node) -> latch.countDown())
+                .setOnClose((event, it, node) -> {
+                    Assert.fail("onClose");
+                    return false;
+                })
+                .setOnNodeDestroy((it, node) -> latch.countDown())
+                .setOnDestroy(it -> latch.countDown());
 
         boolean flag = toasterService.push(toast);
         Assert.assertTrue("toast push fail.", flag);
 
-        flag = countDownLatch.await(10, TimeUnit.SECONDS);
-        Assert.assertTrue("wait timeout.", flag);
+        wait(latch);
+    }
 
-        System.out.println("ToasterFXTest success !");
+    /**
+     * <h2>批量消息体测试</h2>
+     */
+    @SneakyThrows
+    @Test(timeout = TIMEOUT * 1000)
+    public void test02() {
+
+        int num = 100;
+        List<SingleToast> toasts = IntStream.range(0, num)
+                .mapToObj(it ->
+                        toasterService.born(null, "batch toast.", ToastTypes.INFO))
+                .peek(it -> it.setOnArchive((toast, node) -> ReferenceType.WEAK))
+                .collect(Collectors.toList());
+
+        boolean flag = toasterService.push(toasts);
+        Assert.assertTrue("toasts push fail.", flag);
+
+        while (!toasterService.getToastHelper().isEmpty())
+            TimeUnit.SECONDS.sleep(1);
+
+        flag = toasterService.getMultiToastFactory().isShown();
+        Assert.assertTrue("multi toast not shown.", flag);
+
+        toasts = IntStream.range(0, num)
+                .mapToObj(it ->
+                        toasterService.born(null, "batch toast.", ToastTypes.INFO))
+                .peek(it -> it.setOnArchive((toast, node) -> ReferenceType.WEAK))
+                .collect(Collectors.toList());
+
+        flag = toasterService.push(toasts);
+        Assert.assertTrue("toasts push fail.", flag);
+
+        while (!toasterService.getToastHelper().isEmpty())
+            TimeUnit.SECONDS.sleep(1);
+
+        int referenceMapSize = toasterService.getNodeHelper().getReferenceMapSize();
+
+        Assert.assertNotEquals("reference map size < 0.", -1, referenceMapSize);
+    }
+
+    /**
+     * <h2>黑色主题测试</h2>
+     */
+    @Test
+    public void test03() {
+
+        FXUtils.smartLater(() -> toasterService.getToasterFactory().clear());
+
+        toasterService.applyDarkTheme();
+
+        SingleToast toast
+                = toasterService.born(null, "dark theme apply success.", PARAMETER, ToastTypes.SUCCESS);
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        toast.setOnDestroy(it -> latch.countDown());
+
+        boolean flag = toasterService.push(toast);
+        Assert.assertTrue("toast push fail.", flag);
+
+        wait(latch);
+    }
+
+    /**
+     * <h2>等待栅栏执行完毕</h2>
+     *
+     * @param latch 栅栏
+     */
+    @SneakyThrows
+    private void wait(CountDownLatch latch) {
+
+        boolean flag = latch.await(TIMEOUT, TimeUnit.SECONDS);
+        Assert.assertTrue("wait timeout.", flag);
     }
 }

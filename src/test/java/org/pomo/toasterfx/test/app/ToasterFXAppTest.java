@@ -32,6 +32,18 @@ import org.pomo.toasterfx.model.ToastParameter;
 
 import java.util.List;
 
+/**
+ * <h2>ToasterFX App 测试</h2>
+ *
+ * <p>用于本地测试</p>
+ * <br/>
+ *
+ * <p>创建时间：2020-09-29 09:27:44</p>
+ * <p>更新时间：2020-09-29 09:27:44</p>
+ *
+ * @author Mr.Po
+ * @version 1.0
+ */
 public class ToasterFXAppTest extends Application {
 
     @Override
