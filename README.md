@@ -9,7 +9,7 @@ JavaFX 的一个消息提示库。
 * 支持 文本消息、自定义Node、自定义FXML
 * 支持 点击事件、自动关闭、消息列表、后台弹出
 * 自带 默认/暗黑主题，可自定义CSS
-* 支持 JPMS、Jlink (Java9+)
+* 支持 JPMS、Jlink (需要 Java9+)
 
 更多特性及样例请访问：ToasterFX-DEMO。
 

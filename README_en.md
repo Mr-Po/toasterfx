@@ -9,7 +9,7 @@ A message prompt library for JavaFX.
 * Support text, Node, FXML
 * Support click event, auto close, message list, background popup
 * With default/dark theme, custom css
-* Support JPMS, Jlink (Java9+)
+* Support JPMS, Jlink (require Java9+)
 
 For more features and sample demo : toasterfx-demo.
 
