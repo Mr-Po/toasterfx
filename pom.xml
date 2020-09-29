@@ -97,6 +97,15 @@
 
     </dependencies>
 
+    <!--远程仓库-->
+    <distributionManagement>
+        <repository>
+            <id>sonatype-nexus</id>
+            <name>Nexus Release Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
     <build>
 
         <plugins>
