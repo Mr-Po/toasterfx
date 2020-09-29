@@ -234,8 +234,8 @@ public class ToastBarToasterService extends ToasterService {
     /**
      * <h2>弹出成功消息</h2>
      *
-     * @param title     标题
-     * @param content   内容
+     * @param title   标题
+     * @param content 内容
      * @return 是否成功
      */
     public boolean success(String title, @NonNull String content) {
@@ -257,8 +257,8 @@ public class ToastBarToasterService extends ToasterService {
     /**
      * <h2>弹出失败消息</h2>
      *
-     * @param title     标题
-     * @param content   内容
+     * @param title   标题
+     * @param content 内容
      * @return 是否成功
      */
     public boolean fail(String title, @NonNull String content) {
@@ -280,8 +280,8 @@ public class ToastBarToasterService extends ToasterService {
     /**
      * <h2>弹出信息消息</h2>
      *
-     * @param title     标题
-     * @param content   内容
+     * @param title   标题
+     * @param content 内容
      * @return 是否成功
      */
     public boolean info(String title, @NonNull String content) {
@@ -303,8 +303,8 @@ public class ToastBarToasterService extends ToasterService {
     /**
      * <h2>弹出警告消息</h2>
      *
-     * @param title     标题
-     * @param content   内容
+     * @param title   标题
+     * @param content 内容
      * @return 是否成功
      */
     public boolean warn(String title, @NonNull String content) {
@@ -324,8 +324,10 @@ public class ToastBarToasterService extends ToasterService {
         );
     }
 
-    @Override
-    public void destroy() {
-        super.destroy();
+    /**
+     * <h2>应用暗黑主题</h2>
+     */
+    public void applyDarkTheme() {
+        this.getToasterFactory().getStylesheets().addAll(this.getDarkThemeStylesheets());
     }
 }
