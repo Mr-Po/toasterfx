@@ -180,7 +180,7 @@ public class ToastHelper {
      *
      * @return 是/否
      */
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return this.toastHandler.isEmpty();
     }
 
