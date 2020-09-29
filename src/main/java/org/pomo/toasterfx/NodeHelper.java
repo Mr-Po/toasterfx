@@ -157,6 +157,15 @@ public class NodeHelper {
     }
 
     /**
+     * <h2>得到引用-映射的数量</h2>
+     *
+     * @return 数量
+     */
+    public int getReferenceMapSize() {
+        return this.referenceMap == null ? -1 : this.referenceMap.size();
+    }
+
+    /**
      * <h2>得到</h2>
      * <p>当不存在时，创建</p>
      *
@@ -338,8 +347,6 @@ public class NodeHelper {
 
         Map<Toast, Reference<Node>> referenceMap = this.referenceMap;
         this.referenceMap = null;// 确保接下来的遍历不会出错
-
-        int referenceMapSize = referenceMap == null ? 0 : referenceMap.size();
 
         if (!map.isEmpty()) {
 
