@@ -259,8 +259,12 @@ public class ToasterFactory {
 
     /**
      * <h2>清空当前可见&缓存的消息者池</h2>
+     * <p>必须在ui线程调用此方法</p>
      */
     public void clear() {
+
+        FXUtils.checkFxUserThread();
+
         this.clear(this.visualToasters, this.pool);
     }
 
@@ -457,14 +461,11 @@ public class ToasterFactory {
         this.popupStrategy.onDestroy();
         this.popupStrategy = null;
 
-        FXUtils.smartLater(() -> {
+        this.clear(visualToasters, pool);
 
-            this.clear(visualToasters, pool);
-
-            this.window.getStylesheets().clear();
-            this.window.close();
-            this.window = null;
-        });
+        this.window.getStylesheets().clear();
+        this.window.close();
+        this.window = null;
 
         log.trace("ToasterFactory is destroyed.");
     }
