@@ -1,6 +1,7 @@
 # ToasterFX [![language: English](https://img.shields.io/badge/language-English-brightgreen)](README_en.md)
 [![JavaFX: 8.0+](https://img.shields.io/badge/javaFX-8.0%2B-green)](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 [![Build Status](https://travis-ci.com/Mr-Po/toasterfx.svg?branch=master)](https://travis-ci.com/Mr-Po/toasterfx)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.gitee.pomo/toasterfx/badge.svg)](https://search.maven.org/#search|ga|1|com.gitee.pomo.toasterfx)
 [![Apache License](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](LICENSE)
 
 JavaFX 的一个消息提示库。
