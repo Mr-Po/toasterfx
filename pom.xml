@@ -12,6 +12,7 @@
 
     <!--region 项目描述-->
     <name>ToasterFX</name>
+    <url>https://gitee.com/pomo/toasterfx</url>
     <description>A message prompt library for JavaFX.</description>
     <inceptionYear>2020</inceptionYear>
 
