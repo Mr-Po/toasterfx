@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.pomo.toasterfx.model.Toast;
 import org.pomo.toasterfx.model.ToastParameter;
 import org.pomo.toasterfx.util.FXMessages;
+import org.pomo.toasterfx.util.FXUtils;
 
 import java.util.Collection;
 
@@ -61,10 +62,12 @@ public class ToasterService {
     @NonNull
     private MultiToastFactory multiToastFactory;
 
+    @Getter
     @Setter
     @NonNull
     private ToastHelper toastHelper;
 
+    @Getter
     @Setter
     @NonNull
     private NodeHelper nodeHelper;
@@ -154,8 +157,11 @@ public class ToasterService {
 
     /**
      * <h2>销毁</h2>
+     * <p>仅允许在ui线程调用</p>
      */
     public void destroy() {
+
+        FXUtils.checkFxUserThread();
 
         this.toastHelper.destroy();
         this.toastHelper = null;
