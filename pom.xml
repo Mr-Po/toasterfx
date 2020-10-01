@@ -7,7 +7,7 @@
 
     <groupId>com.gitee.pomo</groupId>
     <artifactId>toasterfx</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <!--region 项目描述-->
