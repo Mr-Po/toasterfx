@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 import org.pomo.toasterfx.ToastBarToasterService;
@@ -52,6 +53,7 @@ import java.util.stream.IntStream;
  * @author Mr.Po
  * @version 1.0
  */
+@Slf4j
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ToasterFXTest {
 
@@ -131,7 +133,7 @@ public class ToasterFXTest {
 
         FXUtils.smartLater(() -> toasterService.destroy());
 
-        System.out.println("ToasterFX test success !");
+        log.info("ToasterFX test end.");
     }
 
     /**
@@ -165,6 +167,8 @@ public class ToasterFXTest {
         Assert.assertTrue("toast push fail.", flag);
 
         wait(latch);
+
+        log.info("ToasterFX life cycle test success.");
     }
 
     /**
@@ -205,6 +209,8 @@ public class ToasterFXTest {
         int referenceMapSize = toasterService.getNodeHelper().getReferenceMapSize();
 
         Assert.assertNotEquals("reference map size < 0.", -1, referenceMapSize);
+
+        log.info("ToasterFX batch toast test success.");
     }
 
     /**
@@ -228,6 +234,8 @@ public class ToasterFXTest {
         Assert.assertTrue("toast push fail.", flag);
 
         wait(latch);
+
+        log.info("ToasterFX dark theme test success.");
     }
 
     /**
