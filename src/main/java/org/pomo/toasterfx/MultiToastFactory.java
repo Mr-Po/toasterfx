@@ -20,6 +20,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -92,7 +93,10 @@ public class MultiToastFactory {
     // region {成员变量}
     /**
      * 多消息体 生成器
+     *
+     * <p>其get方法用于提供可观察样式列表等的修改</p>
      */
+    @Getter
     @Setter
     @NonNull
     private Supplier<? extends MultiToast> multiToastSupplier;
