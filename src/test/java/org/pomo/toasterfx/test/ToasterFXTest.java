@@ -138,7 +138,7 @@ public class ToasterFXTest {
      * <h2>生命周期测试</h2>
      */
     @Test
-    public void test01() {
+    public void execute01() {
 
         SingleToast toast = toasterService
                 .born("ToasterFX", "Hello ToasterFX !", PARAMETER, ToastTypes.INFO);
@@ -172,7 +172,7 @@ public class ToasterFXTest {
      */
     @SneakyThrows
     @Test(timeout = TIMEOUT * 1000)
-    public void test02() {
+    public void execute02() {
 
         int num = 100;
         List<SingleToast> toasts = IntStream.range(0, num)
@@ -211,7 +211,7 @@ public class ToasterFXTest {
      * <h2>黑色主题测试</h2>
      */
     @Test
-    public void test03() {
+    public void execute03() {
 
         FXUtils.smartLater(() -> toasterService.getToasterFactory().clear());
 
