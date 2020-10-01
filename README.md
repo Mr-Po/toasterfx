@@ -1,4 +1,5 @@
 # ToasterFX [![language: English](https://img.shields.io/badge/language-English-brightgreen)](README_en.md)
+
 [![JavaFX: 8.0+](https://img.shields.io/badge/javafx-8.0%2B-green)](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 [![Build Status](https://travis-ci.com/Mr-Po/toasterfx.svg?branch=master)](https://travis-ci.com/Mr-Po/toasterfx)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.gitee.pomo/toasterfx/badge.svg)](https://search.maven.org/#search|ga|1|com.gitee.pomo.toasterfx)
@@ -12,7 +13,7 @@ JavaFX 的一个消息提示库。
 * 自带 默认/暗黑主题，可自定义CSS
 * 支持 JPMS、Jlink (需要 Java9+)
 
-更多特性及样例请访问：ToasterFX-DEMO。
+更多特性及样例请访问：[ToasterFX-DEMO](../../../toasterfx-demo)。
 
 ## 安装
 Maven：
