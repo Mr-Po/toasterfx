@@ -48,6 +48,7 @@ public class ToasterService {
      */
     public final static String DEFAULT_BASE_NAME = "org.pomo.toasterfx.language.Message";
 
+    @Getter
     @Setter
     @NonNull
     private FXMessages messages;
