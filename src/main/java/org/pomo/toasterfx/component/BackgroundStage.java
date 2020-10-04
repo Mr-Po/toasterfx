@@ -16,13 +16,14 @@
 package org.pomo.toasterfx.component;
 
 import javafx.collections.ObservableList;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.pomo.toasterfx.ToasterWindow;
 
 /**
- * <h2>后台窗体</h2>
+ * <h2>后台舞台</h2>
  *
- * <p>支持异步实例化，不支持断言模式</p>
+ * <p>需要同步实例化，支持断言模式</p>
  * <br/>
  *
  * <p>创建时间：2020-10-04 14:01:08</p>
@@ -31,22 +32,12 @@ import org.pomo.toasterfx.ToasterWindow;
  * @author Mr.Po
  * @version 1.0
  */
-public class BackgroundWindow extends Window implements ToasterWindow {
+public class BackgroundStage extends Stage implements ToasterWindow {
 
-    public BackgroundWindow() {
+    public BackgroundStage() {
 
         this.setOpacity(0);
         this.setScene(new EmptyScene());
-    }
-
-    @Override
-    public void show() {
-        super.show();
-    }
-
-    @Override
-    public void close() {
-        hide();
     }
 
     @Override

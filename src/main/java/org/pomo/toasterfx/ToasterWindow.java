@@ -19,9 +19,10 @@ import javafx.collections.ObservableList;
 import javafx.stage.Window;
 
 /**
- * <h2>后台窗体</h2>
+ * <h2>消息者 - 窗体</h2>
  *
- * <p>后台窗体接口</p>
+ * <p>用于展示Popup，使其在主界面隐藏时，仍能正常展示消息</p>
+ * <p>当没有消息者时，关闭此窗体</p>
  * <br/>
  *
  * <p>创建时间：2020-09-28 21:22:02</p>
