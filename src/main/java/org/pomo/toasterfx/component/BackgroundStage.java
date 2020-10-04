@@ -17,6 +17,7 @@ package org.pomo.toasterfx.component;
 
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import org.pomo.toasterfx.ToasterWindow;
 
@@ -24,6 +25,7 @@ import org.pomo.toasterfx.ToasterWindow;
  * <h2>后台舞台</h2>
  *
  * <p>需要同步实例化，支持断言模式</p>
+ * <p>当show()被调用时，会获得焦点</p>
  * <br/>
  *
  * <p>创建时间：2020-10-04 14:01:08</p>
@@ -36,7 +38,12 @@ public class BackgroundStage extends Stage implements ToasterWindow {
 
     public BackgroundStage() {
 
+        // 全透明
         this.setOpacity(0);
+
+        // 无任务栏图标
+        this.initStyle(StageStyle.UTILITY);
+
         this.setScene(new EmptyScene());
     }
 
