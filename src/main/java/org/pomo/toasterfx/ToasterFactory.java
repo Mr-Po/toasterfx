@@ -25,7 +25,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.pomo.toasterfx.component.BackgroundStage;
 import org.pomo.toasterfx.control.ToastBox;
 import org.pomo.toasterfx.control.impl.ToastBoxPane;
 import org.pomo.toasterfx.model.Toast;
@@ -216,7 +215,7 @@ public class ToasterFactory {
             this.popupStrategy = new RightBottomPopupStrategy(this.multiToastFactory, Duration.seconds(0.35));
 
         if (this.window == null)
-            FXUtils.smartLater(() -> this.window = new BackgroundStage());
+            this.window = ToasterWindowHelper.create();
 
         this.screens = Screen.getScreens();
 
