@@ -23,6 +23,7 @@ import org.pomo.toasterfx.ToasterWindow;
  * <h2>后台窗体</h2>
  *
  * <p>支持异步实例化，不支持断言模式</p>
+ * <p>当show()被调用时，不会获得焦点</p>
  * <br/>
  *
  * <p>创建时间：2020-10-04 14:01:08</p>
@@ -35,7 +36,9 @@ public class BackgroundWindow extends Window implements ToasterWindow {
 
     public BackgroundWindow() {
 
+        // 全透明
         this.setOpacity(0);
+
         this.setScene(new EmptyScene());
     }
 
