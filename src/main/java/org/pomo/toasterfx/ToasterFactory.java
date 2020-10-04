@@ -25,7 +25,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.pomo.toasterfx.component.BackgroundWindow;
+import org.pomo.toasterfx.component.BackgroundStage;
 import org.pomo.toasterfx.control.ToastBox;
 import org.pomo.toasterfx.control.impl.ToastBoxPane;
 import org.pomo.toasterfx.model.Toast;
@@ -216,7 +216,7 @@ public class ToasterFactory {
             this.popupStrategy = new RightBottomPopupStrategy(this.multiToastFactory, Duration.seconds(0.35));
 
         if (this.window == null)
-            this.window = new BackgroundWindow();
+            FXUtils.smartLater(() -> this.window = new BackgroundStage());
 
         this.screens = Screen.getScreens();
 
@@ -416,6 +416,8 @@ public class ToasterFactory {
 
         pool.forEach(Toaster::destroy);
         pool.clear();
+
+        this.window.close();
     }
 
     /**
@@ -464,7 +466,6 @@ public class ToasterFactory {
         this.clear(visualToasters, pool);
 
         this.window.getStylesheets().clear();
-        this.window.close();
         this.window = null;
 
         log.trace("ToasterFactory is destroyed.");
