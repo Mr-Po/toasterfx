@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * <h2>FX 工具</h2>
@@ -95,6 +96,24 @@ public class FXUtils {
                 throw new RuntimeException(reference.getAndSet(null));
             }
         }
+    }
+
+    /**
+     * <h2>聪明的得到</h2>
+     * <p>当前为UI线程时，直接执行</p>
+     * <p>不为UI线程时，阻塞当前线程，并等待UI线程执行r</p>
+     * <p>不宜频繁调用</p>
+     *
+     * @param supplier 待执行函数
+     * @return 特定类型
+     */
+    public <T> T smartGet(Supplier<T> supplier) {
+
+        AtomicReference<T> reference = new AtomicReference<>();
+
+        smartLater(() -> reference.set(supplier.get()));
+
+        return reference.get();
     }
 
     /**
