@@ -21,12 +21,12 @@ Maven：
 <dependency>
     <groupId>com.gitee.pomo</groupId>
     <artifactId>toasterfx</artifactId>
-    <version>1.0</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 Gradle：
 ```
-compile group: 'com.gitee.pomo', name: 'toasterfx', version: '1.0'
+compile group: 'com.gitee.pomo', name: 'toasterfx', version: '1.0.2'
 ```
 
 ## 使用
