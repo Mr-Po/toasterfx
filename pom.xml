@@ -7,7 +7,7 @@
 
     <groupId>com.gitee.pomo</groupId>
     <artifactId>toasterfx</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <!--region 项目描述-->
@@ -100,11 +100,19 @@
 
     <!--远程仓库-->
     <distributionManagement>
+
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshot</id>
+            <name>Nexus-Snapshot-Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+
         <repository>
-            <id>sonatype-nexus</id>
-            <name>Nexus Release Repository</name>
+            <id>sonatype-nexus-release</id>
+            <name>Nexus-Release-Repository</name>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
+
     </distributionManagement>
 
     <build>
