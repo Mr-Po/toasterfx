@@ -131,6 +131,7 @@
                             <excludes>
                                 <exclude>**/README</exclude>
                                 <exclude>**/pom.xml</exclude>
+                                <exclude>**/.lgtm.yml</exclude>
                                 <exclude>src/test/resources/**</exclude>
                                 <exclude>src/main/resources/**</exclude>
                             </excludes>
