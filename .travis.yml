@@ -13,7 +13,7 @@ services: xvfb
 install: true
 
 # 运行maven测试
-script: mvn cobertura:cobertura
+script: mvn test
 
 # 通知codecov进行代码分析
 after_success: bash <(curl -s https://codecov.io/bash)
