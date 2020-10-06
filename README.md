@@ -2,7 +2,7 @@
 
 [![JavaFX：8.0+](https://img.shields.io/badge/javafx-8.0%2B-blue)](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 [![Build Status](https://travis-ci.com/Mr-Po/toasterfx.svg?branch=master)](https://travis-ci.com/Mr-Po/toasterfx)
-[![LGTM Grade](https://img.shields.io/lgtm/grade/java/github/Mr-Po/toasterfx)](https://lgtm.com/projects/g/Mr-Po/toasterfx/context:java)
+[![Language grade: Java](https://img.shields.io/lgtm/grade/java/github/Mr-Po/toasterfx?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Mr-Po/toasterfx/context:java)
 [![Maven Central](https://img.shields.io/maven-central/v/com.gitee.pomo/toasterfx/1)](https://search.maven.org/#search|ga|1|com.gitee.pomo.toasterfx)
 
 [![License](https://img.shields.io/github/license/Mr-Po/toasterfx?color=blue)](LICENSE)
