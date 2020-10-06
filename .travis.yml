@@ -1,23 +1,19 @@
 language: java
 
-# 无需root权限
 sudo: false
-
 os: linux
+jdk: openjdk8
 
-jdk:
-  - openjdk8
-
-before_install:
-  - sudo apt-get install -y openjfx
+before_install: sudo apt-get install -y openjfx
 
 # 开启虚拟gui服务
-services:
-  - xvfb
+services: xvfb
 
 # 跳过maven完整构建
 install: true
 
 # 运行maven测试
-script:
-  - mvn test
+script: mvn test
+
+# 通知codecov进行代码分析
+after_success: bash <(curl -s https://codecov.io/bash)
