@@ -327,18 +327,14 @@ public class ToasterFXTest extends ApplicationTest {
         CountDownLatch latch = new CountDownLatch(2);
         ToastParameter parameter = ToastParameter.builder().timeout(oneSecond).audio(randomAudio).build();
         SingleToast toast = service.born(null, "a", parameter, ToastTypes.WARN);
-        toast.setOnDestroy(it -> {latch.countDown();
-            System.out.println("ok..........1");});
+        toast.setOnDestroy(it -> latch.countDown());
         service.push(toast);
 
         SingleAudio singleAudio = new SingleAudio(audioClip);
         parameter = ToastParameter.builder().timeout(oneSecond).audio(singleAudio).build();
         toast = service.born(null, "a", parameter, ToastTypes.INFO);
-        toast.setOnDestroy(it -> {latch.countDown();
-            System.out.println("ok..........2");});
+        toast.setOnDestroy(it -> latch.countDown());
         service.push(toast);
-
-        System.out.println("-----------------------AAAAA");
 
         wait(latch);
     }
