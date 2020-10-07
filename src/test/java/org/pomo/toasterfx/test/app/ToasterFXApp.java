@@ -44,7 +44,7 @@ import java.util.List;
  * @author Mr.Po
  * @version 1.0
  */
-public class ToasterFXAppTest extends Application {
+public class ToasterFXApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {

@@ -15,101 +15,105 @@
  */
 package org.pomo.toasterfx.test;
 
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.Node;
+import javafx.scene.media.AudioClip;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.*;
-import org.junit.runners.MethodSorters;
+import org.assertj.core.util.Throwables;
+import org.junit.Assert;
+import org.junit.Test;
 import org.pomo.toasterfx.ToastBarToasterService;
-import org.pomo.toasterfx.model.ReferenceType;
-import org.pomo.toasterfx.model.ToastParameter;
+import org.pomo.toasterfx.Toaster;
+import org.pomo.toasterfx.ToasterFactory;
+import org.pomo.toasterfx.model.*;
+import org.pomo.toasterfx.model.impl.RandomAudio;
+import org.pomo.toasterfx.model.impl.SingleAudio;
 import org.pomo.toasterfx.model.impl.SingleToast;
 import org.pomo.toasterfx.model.impl.ToastTypes;
-import org.pomo.toasterfx.util.FXUtils;
+import org.pomo.toasterfx.model.scalable.NodeCreateable;
+import org.pomo.toasterfx.strategy.impl.RightTopPopupStrategy;
+import org.pomo.toasterfx.util.FXMessages;
 import org.testfx.api.FxToolkit;
+import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.util.WaitForAsyncUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-/**
- * <h2>ToasterFX 测试</h2>
- *
- * <p>用于打包和远端测试</p>
- * <br/>
- *
- * <p>创建时间：2020-09-29 09:28:16</p>
- * <p>更新时间：2020-09-29 09:28:16</p>
- *
- * @author Mr.Po
- * @version 1.0
- */
 @Slf4j
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ToasterFXTest {
+public class ToasterFXTest extends ApplicationTest {
 
     /**
-     * 三秒关闭 - 消息体属性
+     * 1秒
      */
-    private static final ToastParameter PARAMETER = ToastParameter.builder().timeout(Duration.seconds(3)).build();
+    private final Duration oneSecond = Duration.seconds(1);
 
     /**
-     * 消息者服务
+     * 1秒关闭 - 消息体属性
      */
-    private static ToastBarToasterService toasterService;
+    private final ToastParameter parameter = ToastParameter.builder().timeout(oneSecond).build();
 
     /**
      * 等待超时
      */
-    private static final int TIMEOUT = 10;
+    private final long timeout = 10 * 1000;
 
-    /**
-     * <h2>初始化</h2>
-     */
-    @BeforeClass
-    @SneakyThrows
-    public static void init() {
+    private ToastBarToasterService service;
+    private SimpleObjectProperty<Locale> localeProperty;
 
-        FxToolkit.registerPrimaryStage();
+    @Override
+    public void start(Stage stage) {
 
-        toasterService = new ToastBarToasterService();
-        toasterService.initialize();
+        WaitForAsyncUtils.autoCheckException = false;
+        WaitForAsyncUtils.printException = false;
+
+        this.localeProperty = new SimpleObjectProperty<>(Locale.getDefault());
+
+        FXMessages messages = new FXMessages();
+        messages.setLocaleProperty(this.localeProperty);
+
+        this.service = new ToastBarToasterService(messages);
+        this.service.initialize();
+    }
+
+    @Override
+    public void stop() {
+
+        this.service.destroy();
+        this.handleException();
+
+        WaitForAsyncUtils.autoCheckException = true;
+        WaitForAsyncUtils.printException = true;
     }
 
     /**
-     * <h2>销毁</h2>
-     */
-    @AfterClass
-    public static void destroy() {
-
-        if (toasterService != null)
-            FXUtils.smartLater(() -> toasterService.destroy());
-
-        log.info("ToasterFX test end.");
-    }
-
-    /**
-     * <h2>生命周期测试</h2>
+     * <h2>测试生命周期</h2>
      */
     @Test
-    public void execute01() {
+    public void t01() {
 
-        SingleToast toast = toasterService
-                .born("ToasterFX", "Hello ToasterFX !", PARAMETER, ToastTypes.INFO);
+        SingleToast toast = service
+                .born("ToasterFX", "Hello ToasterFX !", parameter, ToastTypes.INFO);
 
         CountDownLatch latch = new CountDownLatch(4);
 
-        toast
-                .setOnDock((it, node) -> {
+        toast.setOnDock((it, node) -> {
 
-                    int visualSize = toasterService.getToasterFactory().getVisualSize();
-                    Assert.assertEquals("visual toaster size not match.", 1, visualSize);
+            int visualSize = service.getToasterFactory().getVisualSize();
+            Assert.assertEquals("visual toaster size not match.", 1, visualSize);
 
-                    latch.countDown();
-                })
-                .setOnUnDock((it, node) -> latch.countDown())
+            latch.countDown();
+        }).setOnUnDock((it, node) -> latch.countDown())
                 .setOnClose((event, it, node) -> {
                     Assert.fail("onClose");
                     return false;
@@ -117,7 +121,7 @@ public class ToasterFXTest {
                 .setOnNodeDestroy((it, node) -> latch.countDown())
                 .setOnDestroy(it -> latch.countDown());
 
-        boolean flag = toasterService.push(toast);
+        boolean flag = service.push(toast);
         Assert.assertTrue("toast push fail.", flag);
 
         wait(latch);
@@ -126,70 +130,242 @@ public class ToasterFXTest {
     }
 
     /**
-     * <h2>批量消息体测试</h2>
+     * <h2>测试批量消息</h2>
      */
     @SneakyThrows
-    @Test(timeout = TIMEOUT * 1000)
-    public void execute02() {
+    @SuppressWarnings("unchecked")
+    @Test(timeout = timeout)
+    public void t02() {
 
         int num = 100;
+
         List<SingleToast> toasts = IntStream.range(0, num)
                 .mapToObj(it ->
-                        toasterService.born(null, "batch toast.", ToastTypes.INFO))
+                        service.born(null, "batch toast.", ToastTypes.INFO))
                 .peek(it -> it.setOnArchive((toast, node) -> ReferenceType.WEAK))
                 .collect(Collectors.toList());
 
-        boolean flag = toasterService.push(toasts);
+        boolean flag = service.push(toasts);
         Assert.assertTrue("toasts push fail.", flag);
 
-        while (!toasterService.getToastHelper().isEmpty())
+        while (!service.getToastHelper().isEmpty())
             TimeUnit.SECONDS.sleep(1);
 
-        flag = toasterService.getMultiToastFactory().isShown();
+        flag = service.getMultiToastFactory().isShown();
         Assert.assertTrue("multi toast not shown.", flag);
 
         toasts = IntStream.range(0, num)
                 .mapToObj(it ->
-                        toasterService.born(null, "batch toast.", ToastTypes.INFO))
-                .peek(it -> it.setOnArchive((toast, node) -> ReferenceType.WEAK))
+                        service.born(null, "batch toast.", ToastTypes.INFO))
+                .peek(it -> it.setOnArchive((toast, node) -> ReferenceType.SOFT))
                 .collect(Collectors.toList());
 
-        flag = toasterService.push(toasts);
+        flag = service.push(toasts);
         Assert.assertTrue("toasts push fail.", flag);
 
-        while (!toasterService.getToastHelper().isEmpty())
+        while (!service.getToastHelper().isEmpty())
             TimeUnit.SECONDS.sleep(1);
 
-        int referenceMapSize = toasterService.getNodeHelper().getReferenceMapSize();
-
+        int referenceMapSize = service.getNodeHelper().getReferenceMapSize();
         Assert.assertNotEquals("reference map size < 0.", -1, referenceMapSize);
+
+        ToasterFactory toasterFactory = service.getToasterFactory();
+        Field field = ToasterFactory.class.getDeclaredField("visualToasters");
+        field.setAccessible(true);
+        List<Toaster> visualToasters = (List<Toaster>) field.get(toasterFactory);
+
+        Toaster toaster = visualToasters.get(0);
+        Toast multiToast = toaster.getToast();
+        Assert.assertTrue("toast is not MultiToast", multiToast instanceof MultiToast);
+
+        System.gc();
+
+        clickOn(toaster.getPopup());
+
+        this.moveTo(0, 0);
 
         log.info("ToasterFX batch toast test success.");
     }
 
     /**
-     * <h2>黑色主题测试</h2>
+     * <h2>测试暗色主题</h2>
      */
     @Test
-    public void execute03() {
+    public void t03() {
 
-        FXUtils.smartLater(() -> toasterService.getToasterFactory().clear());
-
-        toasterService.applyDarkTheme();
+        service.applyDarkTheme();
 
         SingleToast toast
-                = toasterService.born(null, "dark theme apply success.", PARAMETER, ToastTypes.SUCCESS);
+                = service.born(null, "dark theme apply success.", parameter, ToastTypes.SUCCESS);
 
         CountDownLatch latch = new CountDownLatch(1);
 
         toast.setOnDestroy(it -> latch.countDown());
 
-        boolean flag = toasterService.push(toast);
+        boolean flag = service.push(toast);
         Assert.assertTrue("toast push fail.", flag);
 
         wait(latch);
 
         log.info("ToasterFX dark theme test success.");
+    }
+
+    /**
+     * <h2>切换语言</h2>
+     */
+    @Test
+    @SneakyThrows
+    public void t04() {
+        FxToolkit.setupFixture(() -> this.localeProperty.set(Locale.ENGLISH));
+        FxToolkit.setupFixture(() -> this.localeProperty.set(Locale.CHINESE));
+    }
+
+    /**
+     * <h2>测试错误Toast</h2>
+     */
+    @Test
+    public void t05() {
+
+        boolean flag = service.push(new Toast() {
+            @Override
+            public long getCreateTime() {
+                return 0;
+            }
+
+            @Override
+            public ToastParameter getParameter() {
+                return null;
+            }
+
+            @Override
+            public ToastType getType() {
+                return null;
+            }
+
+            @Override
+            public void close() {
+
+            }
+
+            @Override
+            public ReadOnlyObjectProperty<ToastState> getStateProperty() {
+                return null;
+            }
+
+            @Override
+            public ToastState getState() {
+                return null;
+            }
+        });
+        Assert.assertFalse(flag);
+
+        CountDownLatch latch = new CountDownLatch(1);
+        class ToastImpl implements Toast, NodeCreateable {
+
+            @Override
+            public Node createNode(@NonNull Toast toast) {
+                latch.countDown();
+                return null;
+            }
+
+            @Override
+            public long getCreateTime() {
+                return 0;
+            }
+
+            @Override
+            public ToastParameter getParameter() {
+                return null;
+            }
+
+            @Override
+            public ToastType getType() {
+                return null;
+            }
+
+            @Override
+            public void close() {
+
+            }
+
+            @Override
+            public ReadOnlyObjectProperty<ToastState> getStateProperty() {
+                return null;
+            }
+
+            @Override
+            public ToastState getState() {
+                return ToastState.ABLE_SHOW;
+            }
+        }
+        service.push(new ToastImpl());
+
+        wait(latch);
+    }
+
+    /**
+     * <h2>测试右上弹出</h2>
+     */
+    @Test
+    public void t06() {
+
+        service.getToasterFactory().setPopupStrategy(new RightTopPopupStrategy(service.getMultiToastFactory(), Duration.seconds(0.7)));
+
+        this.t01();
+    }
+
+    /**
+     * <h2>测试音频</h2>
+     */
+    @Test
+    public void t07() {
+
+        AudioClip audioClip = new AudioClip(ToasterFXTest.class.getResource("/custom.mp3").toExternalForm());
+
+        RandomAudio randomAudio = new RandomAudio(audioClip);
+
+        CountDownLatch latch = new CountDownLatch(2);
+        ToastParameter parameter = ToastParameter.builder().timeout(oneSecond).audio(randomAudio).build();
+        SingleToast toast = service.born(null, "a", parameter, ToastTypes.WARN);
+        toast.setOnDestroy(it -> latch.countDown());
+        service.push(toast);
+
+        SingleAudio singleAudio = new SingleAudio(audioClip);
+        parameter = ToastParameter.builder().timeout(oneSecond).audio(singleAudio).build();
+        toast = service.born(null, "a", parameter, ToastTypes.INFO);
+        toast.setOnDestroy(it -> latch.countDown());
+        service.push(toast);
+
+        wait(latch);
+    }
+
+    /**
+     * <h2>处理异常</h2>
+     */
+    private void handleException() {
+
+        while (true) {
+
+            try {
+
+                WaitForAsyncUtils.checkException();
+
+            } catch (Throwable throwable) {
+
+                Throwable rootCause = Throwables.getRootCause(throwable);
+
+                // 排除 无法创建音频播放器的异常
+                if (!("com.sun.media.jfxmedia.MediaException".equals(rootCause.getClass().getName())
+                        && "Could not create player!".equals(rootCause.getMessage()))) {
+
+                    Assert.fail(Throwables.getRootCause(throwable).getMessage());
+                }
+
+                continue;
+            }
+
+            break;
+        }
     }
 
     /**
@@ -200,7 +376,7 @@ public class ToasterFXTest {
     @SneakyThrows
     private void wait(CountDownLatch latch) {
 
-        boolean flag = latch.await(TIMEOUT, TimeUnit.SECONDS);
+        boolean flag = latch.await(timeout, TimeUnit.MILLISECONDS);
         Assert.assertTrue("wait timeout.", flag);
     }
 }

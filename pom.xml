@@ -48,8 +48,6 @@
         <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
         <project.build.resourceEncoding>${project.encoding}</project.build.resourceEncoding>
         <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
-
-        <testfx.version>4.0.4-alpha</testfx.version>
     </properties>
 
     <dependencies>
@@ -85,14 +83,14 @@
         <dependency>
             <groupId>org.testfx</groupId>
             <artifactId>testfx-core</artifactId>
-            <version>${testfx.version}</version>
+            <version>4.0.16-alpha</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.testfx</groupId>
             <artifactId>testfx-junit</artifactId>
-            <version>${testfx.version}</version>
+            <version>4.0.15-alpha</version>
             <scope>test</scope>
         </dependency>
 
@@ -233,24 +231,51 @@
             </plugin>
             <!--endregion-->
 
-            <!--region 执行jacoco，得到测试代码覆盖率-->
+            <!--region 执行jacoco，得到测试样例覆盖率-->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.6</version>
                 <executions>
+
                     <execution>
+                        <id>default-prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
+
                     <execution>
-                        <id>report</id>
+                        <id>default-report</id>
+                        <!--将此执行加入到测试阶段-->
                         <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
+
+                    <!--打包时，要求覆盖率高于70%-->
+                    <execution>
+                        <id>default-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>INSTRUCTION</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.70</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
             <!--endregion-->
