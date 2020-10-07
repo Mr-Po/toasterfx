@@ -359,7 +359,8 @@ public class ToasterFXTest extends ApplicationTest {
                         && "Could not create player!".equals(rootCause.getMessage()))) {
 
                     Assert.fail(Throwables.getRootCause(throwable).getMessage());
-                }
+
+                } else log.debug("a MediaException was ignored.");
 
                 continue;
             }
