@@ -30,7 +30,6 @@ import org.pomo.toasterfx.common.Dockable;
 import org.pomo.toasterfx.common.ToasterAware;
 import org.pomo.toasterfx.control.ToastBox;
 import org.pomo.toasterfx.control.ToasterHoverListener;
-import org.pomo.toasterfx.exception.NodeNotFoundException;
 import org.pomo.toasterfx.model.Audio;
 import org.pomo.toasterfx.model.Toast;
 import org.pomo.toasterfx.model.ToastState;
@@ -319,11 +318,11 @@ public final class Toaster {
 
         final Toast toast = this.toast;
 
-        // 向Toast中，注入Toaster
-        FXUtils.run(toast, ToasterAware.class, it -> it.setToaster(this));
-
         // 得到或创建一个Node
         Node node = this.nodeHelper.get(toast);
+
+        // 向Toast中，注入Toaster
+        FXUtils.run(toast, ToasterAware.class, it -> it.setToaster(this));
 
         // 向Node中，注入Toaster
         FXUtils.run(node, ToasterAware.class, it -> it.setToaster(this));
@@ -526,7 +525,8 @@ public final class Toaster {
 
         // 获取Node
         final Toast toast = this.toast;
-        final Node node = this.nodeHelper.tryGet(toast).orElseThrow(NodeNotFoundException::new);
+        final Node node = this.nodeHelper.tryGet(toast)
+                .orElseThrow(() -> new NullPointerException("node not found."));
 
         // 解除与Toaster的bind
         FXUtils.run(toast, ToasterAware.class, it -> it.setToaster(null));

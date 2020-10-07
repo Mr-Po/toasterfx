@@ -284,8 +284,27 @@ public class ToasterFactory {
 
         this.visualToasters.add(index, toaster);
 
-        // 调用此方法后，当前执行会被挂起，其他执行可能会使用此UI线程执行新的show
-        toaster.show(this.popupStrategy);
+        try {
+
+            // 调用此方法后，当前执行会被挂起，其他执行可能会使用此UI线程执行新的show
+            toaster.show(this.popupStrategy);
+
+        } catch (RuntimeException e) {// show失败时
+
+            try {// 尝试重置
+
+                toaster.reset(true);
+                toaster.destroy();
+
+            } catch (RuntimeException e1) {
+                log.error("reset or destroy fail.", e1);
+            }
+
+            this.visualToasters.remove(toaster);
+            this.pool.remove(toaster);
+
+            throw e;
+        }
 
         this.adjustVisualList();
     }
