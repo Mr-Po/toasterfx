@@ -74,8 +74,8 @@ public class ToasterFXTest extends ApplicationTest {
     @Override
     public void start(Stage stage) {
 
-        WaitForAsyncUtils.autoCheckException = false;
-        WaitForAsyncUtils.printException = false;
+        /*WaitForAsyncUtils.autoCheckException = false;
+        WaitForAsyncUtils.printException = false;*/
 
         this.localeProperty = new SimpleObjectProperty<>(Locale.getDefault());
 
@@ -335,6 +335,8 @@ public class ToasterFXTest extends ApplicationTest {
         toast = service.born(null, "a", parameter, ToastTypes.INFO);
         toast.setOnDestroy(it -> latch.countDown());
         service.push(toast);
+
+        System.out.println("-----------------------AAAAA");
 
         wait(latch);
     }
