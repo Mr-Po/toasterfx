@@ -66,7 +66,7 @@ public class ToasterFXTest extends ApplicationTest {
     /**
      * 等待超时
      */
-    private final long timeout = 20 * 1000;
+    private final long timeout = 10 * 1000;
 
     private ToastBarToasterService service;
     private SimpleObjectProperty<Locale> localeProperty;
@@ -319,16 +319,16 @@ public class ToasterFXTest extends ApplicationTest {
 
         RandomAudio randomAudio = new RandomAudio(audioClip);
 
-        CountDownLatch latch = new CountDownLatch(2);
+        CountDownLatch latch = new CountDownLatch(1);
         ToastParameter parameter = ToastParameter.builder().timeout(oneSecond).audio(randomAudio).build();
         SingleToast toast = service.born(null, "a", parameter, ToastTypes.WARN);
-        toast.setOnDestroy(it -> latch.countDown());
+        toast.setOnDock((it, node) -> latch.countDown());
         service.push(toast);
 
         SingleAudio singleAudio = new SingleAudio(audioClip);
         parameter = ToastParameter.builder().timeout(oneSecond).audio(singleAudio).build();
         toast = service.born(null, "a", parameter, ToastTypes.INFO);
-        toast.setOnDestroy(it -> latch.countDown());
+        toast.setOnDock((it, node) -> latch.countDown());
         service.push(toast);
 
         wait(latch);
