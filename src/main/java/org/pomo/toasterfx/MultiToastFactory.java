@@ -123,7 +123,6 @@ public class MultiToastFactory {
             SimpleListToastSupplier multiToastSupplier = new SimpleListToastSupplier();
 
             multiToastSupplier.setService(this.service);
-            multiToastSupplier.setToasterFactory(this.toasterFactory);
             multiToastSupplier.setMessages(this.messages);
             multiToastSupplier.setToastHelper(this.toastHelper);
 

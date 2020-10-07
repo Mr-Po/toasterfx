@@ -54,20 +54,7 @@ import java.util.Objects;
  */
 public class SimpleListToastSupplier extends AbstractListToastSupplier {
 
-    public static final String DEFAULT_THEME_STYLESHEETS
-            = SimpleListToastSupplier.class.getResource("/org/pomo/toasterfx/fxml/SimpleListToastStage.css").toExternalForm();
-
-    public static final String DARK_THEME_STYLESHEETS =
-            SimpleListToastSupplier.class.getResource("/org/pomo/toasterfx/fxml/dark/SimpleListToastStage.css").toExternalForm();
-
-
     // region {成员组件}
-    /**
-     * 消息者 工厂
-     */
-    @Setter
-    @NonNull
-    private ToasterFactory toasterFactory;
 
     /**
      * ToasterFX 服务
@@ -105,7 +92,6 @@ public class SimpleListToastSupplier extends AbstractListToastSupplier {
     public void initialize() {
         super.initialize();
 
-        Objects.requireNonNull(this.toasterFactory, "toasterFactory must non-null but is null.");
         Objects.requireNonNull(this.service, "service must non-null but is null.");
 
         if (this.windowIcon == null)
@@ -114,9 +100,10 @@ public class SimpleListToastSupplier extends AbstractListToastSupplier {
         this.windowStylesheets = FXCollections.observableArrayList();
 
         if (this.isUseDefaultStylesheets())
-            this.windowStylesheets.add(DEFAULT_THEME_STYLESHEETS);
+            this.windowStylesheets.add(TableViewListToastController.DEFAULT_THEME_STYLESHEETS);
 
-        if (this.toasterFactory.isUseDefaultToastTypeStyleSheets())
+        ToasterFactory toasterFactory = this.service.getToasterFactory();
+        if (toasterFactory.isUseDefaultToastTypeStyleSheets())
             this.windowStylesheets.add(ToastTypes.DEFAULT_STYLE_SHEETS);
     }
 
@@ -153,9 +140,6 @@ public class SimpleListToastSupplier extends AbstractListToastSupplier {
         VBox root = entry.getKey();
         TableViewListToastController controller = entry.getValue();
 
-        controller.setToasterFactory(this.toasterFactory);
-        controller.setMessages(this.getMessages());
-        controller.setToastHelper(this.getToastHelper());
         controller.setService(this.service);
 
         controller.setMultiToast(multiToast);

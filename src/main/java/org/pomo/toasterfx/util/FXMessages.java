@@ -109,6 +109,12 @@ public class FXMessages {
         this.propertiesMap = new HashMap<>();
     }
 
+    public FXMessages(ReadOnlyObjectProperty<Locale> localeProperty) {
+        this();
+
+        this.localeProperty = localeProperty;
+    }
+
     /**
      * <h2>初始化</h2>
      */

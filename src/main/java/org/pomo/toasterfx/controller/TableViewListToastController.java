@@ -33,7 +33,6 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.pomo.toasterfx.ToastHelper;
-import org.pomo.toasterfx.ToasterFactory;
 import org.pomo.toasterfx.ToasterService;
 import org.pomo.toasterfx.model.MultiToast;
 import org.pomo.toasterfx.model.Toast;
@@ -62,6 +61,12 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class TableViewListToastController {
+
+    public static final String DEFAULT_THEME_STYLESHEETS
+            = TableViewListToastController.class.getResource("/org/pomo/toasterfx/fxml/SimpleListToastStage.css").toExternalForm();
+
+    public static final String DARK_THEME_STYLESHEETS =
+            TableViewListToastController.class.getResource("/org/pomo/toasterfx/fxml/dark/SimpleListToastStage.css").toExternalForm();
 
     // region {FXML属性}
     @FXML
@@ -109,23 +114,14 @@ public class TableViewListToastController {
     // region {成员组件}
 
     /**
-     * 消息者工厂
-     */
-    @Setter
-    @NonNull
-    private ToasterFactory toasterFactory;
-
-    /**
      * 国际化信息
      */
-    @Setter
     @NonNull
     private FXMessages messages;
 
     /**
      * 消息体 助理
      */
-    @Setter
     @NonNull
     private ToastHelper toastHelper;
 
@@ -153,12 +149,11 @@ public class TableViewListToastController {
      */
     public void init() {
 
-        Objects.requireNonNull(this.toasterFactory, "toasterFactory must non-null but is null.");
-        Objects.requireNonNull(this.messages, "messages must non-null but is null.");
-        Objects.requireNonNull(this.toastHelper, "toastHelper must non-null but is null.");
+        Objects.requireNonNull(this.multiToast, "multiToast must non-null but is null.");
         Objects.requireNonNull(this.service, "service must non-null but is null.");
 
-        Objects.requireNonNull(this.multiToast, "multiToast must non-null but is null.");
+        this.messages = this.service.getMessages();
+        this.toastHelper = this.service.getToastHelper();
 
         this.initTableView();
 
@@ -535,8 +530,6 @@ public class TableViewListToastController {
         this.messages.disposeBinging(colType);
         this.messages.disposeBinging(colOperate);
         this.messages = null;
-
-        this.toasterFactory = null;
 
         // 销毁此 multiToast
         if (this.multiToast.getState() != ToastState.DESTROY)

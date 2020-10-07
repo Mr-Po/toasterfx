@@ -16,7 +16,7 @@
 package org.pomo.toasterfx.model.impl;
 
 import javafx.scene.media.AudioClip;
-import lombok.RequiredArgsConstructor;
+import lombok.NonNull;
 import org.pomo.toasterfx.model.Audio;
 
 import java.util.Random;
@@ -33,10 +33,14 @@ import java.util.Random;
  * @author Mr.Po
  * @version 1.0
  */
-@RequiredArgsConstructor
 public class RandomAudio implements Audio {
 
+    @NonNull
     private final AudioClip[] audios;
+
+    public RandomAudio(@NonNull AudioClip... audios) {
+        this.audios = audios;
+    }
 
     private final Random random = new Random();
 
