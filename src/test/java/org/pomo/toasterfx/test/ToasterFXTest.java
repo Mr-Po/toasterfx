@@ -74,9 +74,6 @@ public class ToasterFXTest extends ApplicationTest {
     @Override
     public void start(Stage stage) {
 
-        WaitForAsyncUtils.autoCheckException = false;
-        WaitForAsyncUtils.printException = false;
-
         this.localeProperty = new SimpleObjectProperty<>(Locale.getDefault());
 
         FXMessages messages = new FXMessages();
@@ -88,12 +85,7 @@ public class ToasterFXTest extends ApplicationTest {
 
     @Override
     public void stop() {
-
         this.service.destroy();
-        this.handleException();
-
-        WaitForAsyncUtils.autoCheckException = true;
-        WaitForAsyncUtils.printException = true;
     }
 
     /**
@@ -320,6 +312,9 @@ public class ToasterFXTest extends ApplicationTest {
     @Test
     public void t07() {
 
+        WaitForAsyncUtils.autoCheckException = false;
+        WaitForAsyncUtils.printException = false;
+
         AudioClip audioClip = new AudioClip(ToasterFXTest.class.getResource("/custom.mp3").toExternalForm());
 
         RandomAudio randomAudio = new RandomAudio(audioClip);
@@ -337,6 +332,11 @@ public class ToasterFXTest extends ApplicationTest {
         service.push(toast);
 
         wait(latch);
+
+        this.handleException();
+
+        WaitForAsyncUtils.autoCheckException = true;
+        WaitForAsyncUtils.printException = true;
     }
 
     /**
