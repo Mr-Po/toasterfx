@@ -32,7 +32,6 @@ import org.pomo.toasterfx.model.Toast;
  * @author Mr.Po
  * @version 1.0
  */
-@FunctionalInterface
 public interface Actionable {
 
     /**
@@ -54,7 +53,5 @@ public interface Actionable {
      *
      * @return 是否存在
      */
-    default boolean hasAction() {
-        return true;
-    }
+    boolean hasAction();
 }
