@@ -74,8 +74,8 @@ public class ToasterFXTest extends ApplicationTest {
     @Override
     public void start(Stage stage) {
 
-        /*WaitForAsyncUtils.autoCheckException = false;
-        WaitForAsyncUtils.printException = false;*/
+        WaitForAsyncUtils.autoCheckException = false;
+        WaitForAsyncUtils.printException = false;
 
         this.localeProperty = new SimpleObjectProperty<>(Locale.getDefault());
 
@@ -327,13 +327,15 @@ public class ToasterFXTest extends ApplicationTest {
         CountDownLatch latch = new CountDownLatch(2);
         ToastParameter parameter = ToastParameter.builder().timeout(oneSecond).audio(randomAudio).build();
         SingleToast toast = service.born(null, "a", parameter, ToastTypes.WARN);
-        toast.setOnDestroy(it -> latch.countDown());
+        toast.setOnDestroy(it -> {latch.countDown();
+            System.out.println("ok..........");});
         service.push(toast);
 
         SingleAudio singleAudio = new SingleAudio(audioClip);
         parameter = ToastParameter.builder().timeout(oneSecond).audio(singleAudio).build();
         toast = service.born(null, "a", parameter, ToastTypes.INFO);
-        toast.setOnDestroy(it -> latch.countDown());
+        toast.setOnDestroy(it -> {latch.countDown();
+            System.out.println("ok..........");});
         service.push(toast);
 
         System.out.println("-----------------------AAAAA");
