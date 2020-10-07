@@ -31,12 +31,10 @@ public interface ToasterHoverListener {
     /**
      * <h2>hover 进入</h2>
      */
-    default void onHoverEnter() {
-    }
+    void onHoverEnter();
 
     /**
      * <h2>hover 离开</h2>
      */
-    default void onHoverExit() {
-    }
+    void onHoverExit();
 }
