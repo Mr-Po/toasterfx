@@ -21,6 +21,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.pomo.toasterfx.model.ToastParameter;
 import org.pomo.toasterfx.model.impl.ToastTypes;
+import org.testfx.api.FxToolkit;
+
+import java.util.concurrent.TimeoutException;
 
 public class ToastBarToasterServiceTest {
 
@@ -95,5 +98,36 @@ public class ToastBarToasterServiceTest {
     public void setDigestCalculator() {
         service.setDigestCalculator(String::concat);
         service.setDigestCalculator(null);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void initialize01() {
+
+        ToastBarToasterService service = new ToastBarToasterService();
+        service.fail(null, "a");
+
+        Assert.fail();
+    }
+
+    @Test
+    public void initialize02() {
+
+        ToastBarToasterService service = new ToastBarToasterService();
+        service.destroy();
+    }
+
+    @Test
+    public void initialize03() throws TimeoutException {
+
+        ToastBarToasterService service = new ToastBarToasterService();
+        service.initialize();
+
+        ToasterFactory toasterFactory = service.getToasterFactory();
+
+        service.initialize();
+
+        Assert.assertEquals(toasterFactory, service.getToasterFactory());
+
+        FxToolkit.setupFixture(service::destroy);
     }
 }

@@ -16,8 +16,10 @@
 package org.pomo.toasterfx.test;
 
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.junit.Assert;
@@ -94,11 +96,37 @@ public class TableViewListToastControllerTest extends ApplicationTest {
     @Test
     public void t01() {
 
+        Node all = lookup(".check-box").query();
+        clickOn(all);
+
+        // 选中
+        long count = lookup(".check-box").queryAll().stream()
+                .filter(it -> ((CheckBox) it).isSelected()).count();
+
+        // 全部
+        int size = lookup(".check-box").queryAll().size();
+
+        Assert.assertEquals(size, count);
+
+        // 取消选中的前三个
         lookup(".check-box").queryAll().stream().skip(1).limit(3).forEach(this::clickOn);
+
+        count = lookup(".check-box").queryAll().stream()
+                .filter(it -> ((CheckBox) it).isSelected()).count();
+
+        Assert.assertEquals(size - 3 - 1, count);
+
         clickOn("#btnDeleteSelect");
 
+        count = lookup(".check-box").queryAll().stream()
+                .filter(it -> ((CheckBox) it).isSelected()).count();
+        Assert.assertEquals(0, count);
+
+        size = lookup(".check-box").queryAll().size();
+        Assert.assertEquals(4, size);
+
         Label labTotal = lookup("#labTotal").query();
-        Assert.assertTrue(labTotal.getText().contains("17"));
+        Assert.assertTrue(labTotal.getText().contains("3"));
     }
 
     /**
