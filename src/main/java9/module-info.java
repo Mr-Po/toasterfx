@@ -31,6 +31,7 @@ module org.pomo.toasterfx {
     exports org.pomo.toasterfx.strategy;
     exports org.pomo.toasterfx.component;
     exports org.pomo.toasterfx.transition;
+    exports org.pomo.toasterfx.controller;
     exports org.pomo.toasterfx.model.impl;
     exports org.pomo.toasterfx.control.impl;
     exports org.pomo.toasterfx.strategy.impl;
