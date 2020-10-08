@@ -528,8 +528,6 @@ public final class Toaster {
         final Node node = this.nodeHelper.tryGet(toast)
                 .orElseThrow(() -> new NullPointerException("node not found."));
 
-        toast.getParameter().getAudio().ifPresent(Audio::stop);
-
         // 解除与Toaster的bind
         FXUtils.run(toast, ToasterAware.class, it -> it.setToaster(null));
         FXUtils.run(node, ToasterAware.class, it -> it.setToaster(null));

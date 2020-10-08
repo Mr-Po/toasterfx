@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.pomo.toasterfx.ToastBarToasterService;
 import org.pomo.toasterfx.model.ToastParameter;
+import org.pomo.toasterfx.model.impl.SingleAudio;
 
 import java.util.List;
 
@@ -56,11 +57,13 @@ public class ToasterFXApp extends Application {
         button.setOnAction(it -> toasterService.info("ToasterFX", "Hello ToasterFX !"));
 
         Button button2 = new Button("有进度");
-        ToastParameter parameter = ToastParameter.builder().timeout(Duration.seconds(3)).build();
+        SingleAudio audio = new SingleAudio(ToasterFXApp.class.getResource("/custom.mp3"));
+        ToastParameter parameter = ToastParameter.builder().audio(audio).timeout(Duration.seconds(3)).build();
         button2.setOnAction(it -> toasterService.info("ToasterFX", "Hello ToasterFX !", parameter));
 
         Button button3 = new Button("退出");
         button3.setOnAction(it -> {
+            audio.stop();
             toasterService.destroy();
             Platform.exit();
         });

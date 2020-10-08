@@ -333,6 +333,9 @@ public class ToasterFXTest extends ApplicationTest {
 
         wait(latch);
 
+        randomAudio.stop();
+        singleAudio.stop();
+
         this.handleException();
 
         WaitForAsyncUtils.autoCheckException = true;
