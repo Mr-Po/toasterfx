@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.pomo.toasterfx.model.Audio;
 import org.pomo.toasterfx.model.Toast;
 import org.pomo.toasterfx.model.ToastParameter;
 import org.pomo.toasterfx.util.FXMessages;
@@ -81,6 +82,11 @@ public class ToasterService {
     @NonNull
     private ToastParameter defaultToastParameter;
 
+    /**
+     * 是否初始化
+     */
+    private boolean initialize = false;
+
     public ToasterService(FXMessages messages) {
         this.messages = messages;
     }
@@ -89,6 +95,8 @@ public class ToasterService {
      * <h2>初始化</h2>
      */
     public void initialize() {
+
+        if (this.initialize) return;
 
         this.autoFill();
 
@@ -116,6 +124,8 @@ public class ToasterService {
         this.multiToastFactory.initialize();
         this.toastHelper.initialize();
         this.nodeHelper.initialize();
+
+        this.initialize = true;
     }
 
     /**
@@ -133,6 +143,14 @@ public class ToasterService {
     }
 
     /**
+     * <h2>检查是否初始化</h2>
+     */
+    protected void checkInitialize() {
+        if (!this.initialize)
+            throw new IllegalStateException(this.getClass().getSimpleName() + " uninitialized.");
+    }
+
+    /**
      * <h2>推入</h2>
      * <p>将 消息 放入 消息队列 中</p>
      * <p>当短时间内，push量很大时。此消息可能不会弹出，而是放入 消息列表 中</p>
@@ -141,6 +159,8 @@ public class ToasterService {
      * @return 是否添加成功（立即）
      */
     public boolean push(@NonNull Toast toast) {
+
+        this.checkInitialize();
         return this.toastHelper.push(toast);
     }
 
@@ -153,6 +173,8 @@ public class ToasterService {
      * @return 是否添加成功（立即）
      */
     public boolean push(@NonNull Collection<? extends Toast> toasts) {
+
+        this.checkInitialize();
         return this.toastHelper.push(toasts);
     }
 
@@ -162,7 +184,11 @@ public class ToasterService {
      */
     public void destroy() {
 
+        if (!this.initialize) return;
+
         FXUtils.checkFxUserThread();
+
+        this.defaultToastParameter.getAudio().ifPresent(Audio::stop);
 
         this.toastHelper.destroy();
         this.toastHelper = null;

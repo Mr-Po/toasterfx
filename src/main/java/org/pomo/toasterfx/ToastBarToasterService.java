@@ -83,6 +83,8 @@ public class ToastBarToasterService extends ToasterService {
     public SingleToast born(String title, @NonNull String content,
                             ToastParameter parameter, @NonNull ToastType type) {
 
+        this.checkInitialize();
+
         // 当消息参数为null时，使用缺省的消息参数
         if (parameter == null) parameter = this.getDefaultToastParameter();
 
